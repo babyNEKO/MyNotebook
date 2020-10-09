@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <style>
+        hr{
+            margin-top: 24px;
+        }
+        h2{
+            margin-top: 8px;
+            margin-left: 4px;
+        }
+        h5{
+            margin-left: 4px;
+            margin-top: 12px;
+        }
+    </style>
+    <title>{{ title }}</title>
+</head>
+<body onload="historyCut()">
+    {% include 'NAV_BAR.html' %}
+{# ================================================================================================================= #}
+    <h2>最近动态</h2>
+    <div class="row" style="margin-left: 0; margin-right: 0; margin-top: 16px">
+        {% for context in history %}
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{ context.note_name | truncatechars:25 | safe }}</h4>
+                    <p class="card-text">{{ context.context | truncatechars:125 | safe }}&nbsp;...&nbsp;...</p>
+                    <a class="card-link" href="{% url '查看笔记' context.id %}">查看笔记</a>
+                    <a class="card-link" href="{% url '编辑笔记' context.id %}">编辑笔记</a>
+                </div>
+            </div>
+        </div>
+            {% empty %}
+            <h5>创建几个笔记回来再看看吧？</h5>
+        {% endfor %}
+    </div>
+    <hr>
+{# ================================================================================================================= #}
+    <script src="{% static 'jquery-3.5.1.min.js' %}"></script><script>
+        function historyCut(){
+            // 标题修复
+            for (let i=0; i<document.getElementsByTagName('h4').length; i++){
+                if (document.getElementsByTagName('h4')[i].innerHTML.length >20){
+                    document.getElementsByClassName('card-title')[i].innerHTML += " ... ...";
+                }
+            }
+        }
+    </script><script src="{% static 'js/bootstrap.js' %}"></script>
+</body></html>
